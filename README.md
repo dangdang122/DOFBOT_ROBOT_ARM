@@ -47,7 +47,7 @@
 ## 🚀 4. 시작하기 (Quick Start)
 
 ### 1️⃣ 설치 환경
-* **OS**: Jetson Nano (Ubuntu 기반)
+* **OS**: Raspberry Pi 4 Model B
 * **Library**: `Arm_Lib` (Yahboom 제공 라이브러리)
 
 ### 2️⃣ 실행 순서
@@ -60,4 +60,5 @@ python3 workspace.py
 
 # 3. 메인 데모(사각형 그리기) 실행
 python3 IK.py
+
 
