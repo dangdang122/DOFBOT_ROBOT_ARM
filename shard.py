@@ -12,7 +12,7 @@ robot_state = {
     "z": 0.0
 }
 
-joints_degrees = [0,0,0,0,0]
+joints_degrees = [0,0,0,0,0,0]
 
 cmd_lock = threading.Lock()
 state_lock = threading.Lock()
