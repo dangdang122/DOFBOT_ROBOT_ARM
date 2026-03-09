@@ -5,6 +5,7 @@ from flask_socketio import SocketIO
 import shared
 import robot_thread
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
@@ -39,11 +40,6 @@ def broadcast_data():
         time.sleep(0.05)
 
 
-@socketio.on('connect')
-def handle_connect():
-    print("Client Connected")
-
-
 @socketio.on('set_gripper')
 def handle_set_gripper(data):
 
@@ -61,31 +57,28 @@ def handle_set_pos(data):
         with shared.cmd_lock:
             shared.command["target_pos"] = data['pos']
 
+
 @socketio.on('set_torque')
 def handle_set_torque(data):
-    
+
     if 'torque' in data:
-        
+
         with shared.cmd_lock:
             shared.command["torque_cmd"] = data['torque']
-            
+
 
 if __name__ == "__main__":
-
-    print("System Starting")
 
     t_robot = threading.Thread(
         target=robot_thread.run_robot_loop,
         daemon=True
     )
-
     t_robot.start()
 
     t_broadcast = threading.Thread(
         target=broadcast_data,
         daemon=True
     )
-
     t_broadcast.start()
 
     socketio.run(
