@@ -2,7 +2,7 @@
 
 ## 1. 개요
 
-본 서버는 **DOFBOT 로봇팔을 원격으로 제어하기 위한 Socket.IO 기반 API**를 제공한다.
+본 서버는 **DOFBOT 로봇팔을 원격으로 제어하기 위한 Socket.IO 기반 API와 REST API Server** 를 제공한다.
 
 클라이언트는 서버에 연결하여 다음 기능을 사용할 수 있다.
 
