@@ -1,70 +1,12 @@
 import threading
-import time
-from flask import Flask
-from flask_socketio import SocketIO
-import shared
-import robot_thread
+
+from app.websocket_server import create_app
+from app.websocket_server.socketio_instance import socketio
+from app.websocket_server.broadcaster import broadcast_data
+from app.robot import robot_thread
 
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-
-socketio = SocketIO(
-    app,
-    cors_allowed_origins="*",
-    async_mode='threading'
-)
-
-
-def broadcast_data():
-
-    while True:
-
-        robot_packet = {}
-
-        with shared.state_lock:
-
-            robot_packet['ee'] = shared.robot_state.copy()
-            robot_packet['joints'] = shared.joints_degrees[:]
-
-        try:
-
-            socketio.emit(
-                'robot_state',
-                robot_packet
-            )
-
-        except Exception:
-            pass
-
-        time.sleep(0.05)
-
-
-@socketio.on('set_gripper')
-def handle_set_gripper(data):
-
-    if 'gripper' in data:
-
-        with shared.cmd_lock:
-            shared.command["gripper_cmd"] = data['gripper']
-
-
-@socketio.on('set_pos')
-def handle_set_pos(data):
-
-    if 'pos' in data:
-
-        with shared.cmd_lock:
-            shared.command["target_pos"] = data['pos']
-
-
-@socketio.on('set_torque')
-def handle_set_torque(data):
-
-    if 'torque' in data:
-
-        with shared.cmd_lock:
-            shared.command["torque_cmd"] = data['torque']
+app = create_app()
 
 
 if __name__ == "__main__":
