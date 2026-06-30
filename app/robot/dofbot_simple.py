@@ -84,7 +84,7 @@ class DofbotSimple:
         s2 = 90 + math.degrees(ik_angles[2])
         s3 = 90 + math.degrees(ik_angles[3])
         s4 = 90 + math.degrees(ik_angles[4])
-        s5 = 90
+        s5 = 45
 
         safe = [int(max(0,min(180,a))) for a in [s1,s2,s3,s4,s5]]
         self.Arm.Arm_serial_servo_write6(
@@ -106,7 +106,7 @@ class DofbotSimple:
     def go_home(self):
 
         self.Arm.Arm_serial_servo_write6(
-            90,90,90,90,90,
+            90,90,90,90,45,
             self.gripper_angle,
             1000
         )
