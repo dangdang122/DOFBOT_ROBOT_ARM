@@ -22,7 +22,8 @@ class DofbotSimple:
         self.gripper_angle = 90
         self.last_pos = [0.0,0.0,0.0]
         self.last_joints = [0.0]*7
-
+        
+        time.sleep(1)
         self.sync_state_from_hardware()
 
 

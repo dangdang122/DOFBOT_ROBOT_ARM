@@ -6,7 +6,8 @@ from .dofbot_simple import DofbotSimple
 def run_robot_loop():
 
     bot = None
-
+    last_sync = 0
+    
     try:
         bot = DofbotSimple("dofbot.urdf")
 
@@ -49,14 +50,18 @@ def run_robot_loop():
                 bot.move_to_xyz(float(x),float(y),float(z))
 
 
-            degrees = bot.sync_state_from_hardware()
+            if time.time() - last_sync > 0.5:
 
-            with shared.state_lock:
-                shared.robot_state["x"] = bot.last_pos[0]
-                shared.robot_state["y"] = bot.last_pos[1]
-                shared.robot_state["z"] = bot.last_pos[2]
+                degrees = bot.sync_state_from_hardware()
 
-                shared.joints_degrees = degrees[:]
+                with shared.state_lock:
+                    shared.robot_state["x"] = bot.last_pos[0]
+                    shared.robot_state["y"] = bot.last_pos[1]
+                    shared.robot_state["z"] = bot.last_pos[2]
+
+                    shared.joints_degrees = degrees[:]
+
+                last_sync = time.time()
 
             time.sleep(0.05)
 
