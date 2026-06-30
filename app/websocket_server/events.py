@@ -20,3 +20,9 @@ def handle_set_torque(data):
     if 'torque' in data:
         with shared.cmd_lock:
             shared.command["torque_cmd"] = data['torque']
+
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    with shared.cmd_lock:
+        shared.command["torque_cmd"] = 0

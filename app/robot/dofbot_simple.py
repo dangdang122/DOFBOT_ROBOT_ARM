@@ -56,7 +56,7 @@ class DofbotSimple:
 
     def set_gripper(self,angle,duration_ms=1500):
 
-        angle = int(max(10,min(170,angle)))
+        angle = int(max(0, min(180, angle)))
 
         if self.gripper_angle == angle:
             return
@@ -71,7 +71,7 @@ class DofbotSimple:
 
 
     def move_to_xyz(self,x,y,z,duration_ms=1500):
-
+        self.Arm.Arm_serial_set_torque(1)
         target_position = [x,y,z]
 
         ik_angles = self.chain.inverse_kinematics(
@@ -86,7 +86,6 @@ class DofbotSimple:
         s5 = 90
 
         safe = [int(max(0,min(180,a))) for a in [s1,s2,s3,s4,s5]]
-
         self.Arm.Arm_serial_servo_write6(
             safe[0],
             safe[1],
@@ -111,4 +110,6 @@ class DofbotSimple:
             1000
         )
 
-        time.sleep(1.5)
+        time.sleep(2)
+        self.Arm.Arm_serial_set_torque(0)
+        time.sleep(0.5)
